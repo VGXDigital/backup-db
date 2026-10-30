@@ -5,7 +5,7 @@
 # https://vgx.digital
 #
 # Version: 7.4
-# Modified: September 28, 2026
+# Modified: October 30, 2026
 #
 # DESCRIPTION:
 # Automated MySQL/MariaDB and PostgreSQL database backups with multi-storage backend support.
