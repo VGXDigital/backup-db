@@ -4,6 +4,13 @@ A comprehensive database backup script with multi-storage backend support, autom
 
 ---
 
+## Version 7.4 (October 30, 2026) - PostgreSQL Filename Collision Fix
+
+### Fixes
+- **Same-named databases no longer overwrite each other** — PostgreSQL backups are now saved as `YYYYMMDD_pg_<db>.sql.gz`, so a Postgres and a MySQL database with the same name (e.g. `shlink`) keep separate files. MySQL filenames are unchanged, and the incremental check now looks for yesterday's Postgres dump under the new name. The first Postgres run after upgrading has no `pg_` file to compare against, so it will always write a fresh backup
+
+---
+
 ## Version 7.3 (September 28, 2026) - No More Silent Failures
 
 ### Fixes

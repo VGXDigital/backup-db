@@ -1,10 +1,10 @@
 #!/bin/bash
 ###############################################################################
 # Database Backup Script - Simplified & Optimized
-# Copyright (c) 2025-2026 VGX Consulting by Vijendra Malhotra. All rights reserved.
+# Copyright (c) 2025-2026 VGX Consulting. All rights reserved.
 # https://vgx.digital
 #
-# Version: 7.3
+# Version: 7.4
 # Modified: September 28, 2026
 #
 # DESCRIPTION:
@@ -33,7 +33,7 @@ DEBUG_MODE=false
 DRY_RUN=false
 
 # Script identity
-VERSION="7.3"
+VERSION="7.4"
 SCRIPT_NAME="BackupDB"
 GITHUB_REPO="https://raw.githubusercontent.com/VGXDigital/backup-db/refs/heads/main/BackupDB.sh"
 
@@ -759,7 +759,9 @@ backup_database() {
     local db="$6"
     local backup_path="$7"
 
-    local backup_file="${backup_path}/${TODAY}_${db}.sql"
+    # Postgres gets a pg_ prefix so same-named DBs across types don't collide; MySQL names stay unchanged
+    local prefix=""; [[ "$type" == "postgres" ]] && prefix="pg_"
+    local backup_file="${backup_path}/${TODAY}_${prefix}${db}.sql"
 
     log INFO "Backing up $type database: $db from $host:$port"
 
@@ -807,7 +809,7 @@ backup_database() {
         else
             yesterday=$(date --date="yesterday" +%Y%m%d)
         fi
-        local yesterday_file="${backup_path}/${yesterday}_${db}.sql.gz"
+        local yesterday_file="${backup_path}/${yesterday}_${prefix}${db}.sql.gz"
         if [[ -f "$yesterday_file" ]]; then
             log DEBUG "Comparing with yesterday's backup for $db..."
             local current_hash yesterday_hash
