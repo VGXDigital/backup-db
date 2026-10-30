@@ -4,6 +4,13 @@ A comprehensive database backup script with multi-storage backend support, autom
 
 ---
 
+## Version 7.5 (October 30, 2026) - Failed Runs No Longer Block Later Backups
+
+### Fixes
+- **Git pull survives leftovers from a failed run** — if a push or commit failed, the uncommitted changes left in the backup folder made the next run's `git pull` refuse to run, so every later backup died before dumping anything. The pull now uses `--rebase --autostash`, which sets local changes aside, pulls, and puts them back so the next commit picks them up
+
+---
+
 ## Version 7.4 (October 30, 2026) - PostgreSQL Filename Collision Fix
 
 ### Fixes

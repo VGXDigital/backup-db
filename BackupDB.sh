@@ -4,7 +4,7 @@
 # Copyright (c) 2025-2026 VGX Consulting. All rights reserved.
 # https://vgx.digital
 #
-# Version: 7.4
+# Version: 7.5
 # Modified: October 30, 2026
 #
 # DESCRIPTION:
@@ -33,7 +33,7 @@ DEBUG_MODE=false
 DRY_RUN=false
 
 # Script identity
-VERSION="7.4"
+VERSION="7.5"
 SCRIPT_NAME="BackupDB"
 GITHUB_REPO="https://raw.githubusercontent.com/VGXDigital/backup-db/refs/heads/main/BackupDB.sh"
 
@@ -1001,7 +1001,8 @@ if [[ "$STORAGE_TYPE" == "git" ]]; then
         fi
     else
         log INFO "Pulling latest from Git repository..."
-        if ! git -C "$BACKUP_DIR" pull; then
+        # --autostash: leftovers from a failed run must not block the pull and kill every later backup
+        if ! git -C "$BACKUP_DIR" pull --rebase --autostash; then
             die "Failed to pull from Git repository: $GIT_REPO"
         fi
     fi
